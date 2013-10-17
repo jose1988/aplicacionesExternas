@@ -15,13 +15,13 @@ if (isset($_GET["idAct"])||isset($_GET["idSes"])||isset($_GET["idCond"])||isset(
              'condicionActual' => $condicion,
            );
            $retorno = $client->FinalizarActividad($parametros);
-                      echo '<pre>';  
-           print_r($retorno);
+             //         echo '<pre>';  
+           //print_r($retorno);
 			if($retorno->return->estatus=="OK"){
 				//Consultado el id minimo en Cola para asignar
 					$retornoActividad = $client->primeroEnEntrarPrimeroEnSalirDeCola();
-					echo '<br>IDActi_<pre>';
-					print_r($retornoActividad);
+					//echo '<br>IDActi_<pre>';
+					//print_r($retornoActividad);
 					if($retornoActividad->return->estatus=="OK"){
 							//Asignando nueva actividad a usuario y se saca de la cola
 							$actividad= array('id' => $retornoActividad->return->actividads->id,'borrado'=>'false');
@@ -31,8 +31,8 @@ if (isset($_GET["idAct"])||isset($_GET["idSes"])||isset($_GET["idCond"])||isset(
 							 'usuarioActual' => $usuario,
 						   );					   
 						   $Resultado = $client->ConsumirCola($xxx);
-									   echo 'Consumo<br><pre>';
-						   print_r($Resultado);
+						//			   echo 'Consumo<br><pre>';
+						  // print_r($Resultado);
 						   if($Resultado->return->estatus=="OK"){
 							echo '<script language="javascript"> window.location = "http://localhost:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$Resultado->return->estatus.'"; </script>';
 
