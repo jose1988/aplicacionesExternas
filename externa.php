@@ -34,22 +34,22 @@ if (isset($_GET["idAct"])||isset($_GET["idSes"])||isset($_GET["idCond"])||isset(
 						//			   echo 'Consumo<br><pre>';
 						  // print_r($Resultado);
 						   if($Resultado->return->estatus=="OK"){
-							echo '<script language="javascript"> window.location = "http://localhost:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$Resultado->return->estatus.'"; </script>';
+							echo '<script language="javascript"> window.location = "http://192.168.1.102:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$Resultado->return->estatus.'"; </script>';
 
 						   }else{
-							echo '<script language="javascript"> window.location = "http://localhost:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$Resultado->return->estatus.'"; </script>';
+							echo '<script language="javascript"> window.location = "http://192.168.1.102:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$Resultado->return->estatus.'"; </script>';
 							}
 					}else{
-						echo '<script language="javascript"> window.location = "http://localhost:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$retornoActividad->return->estatus.'"; </script>';
+						echo '<script language="javascript"> window.location = "http://192.168.1.102:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$retornoActividad->return->estatus.'"; </script>';
 					}
 					
 			}else{
-			echo '<script language="javascript"> window.location = "http://localhost:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$retorno->return->estatus.'"; </script>';
+			echo '<script language="javascript"> window.location = "http://192.168.1.102:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml?estatus='.$retorno->return->estatus.'"; </script>';
 			
 			}
 			
 	}else{
-		echo '<script language="javascript"> window.location = "http://localhost:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml"; </script>';
+		echo '<script language="javascript"> window.location = "http://192.168.1.102:15362/HoriFarmaciasAnalistas/faces/actividadgrupousuario.xhtml"; </script>';
 	}	   
 	
 			
