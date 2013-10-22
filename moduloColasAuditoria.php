@@ -189,13 +189,13 @@
 								    <button type="submit" data-dismiss="modal" class="btn btn-primary">Guardar</button>
 								  </div>
 								</div>
-							<?php 
-						for($i=0;$i<count($Resultado->return);$i++){
-						?>	
+							
 							<div class="medicamentos">
 						
 							<h3>Medicamentos</h3>
-							
+							<?php 
+						for($i=0;$i<count($Resultado->return);$i++){
+						?>	
 							<div class="drug-process">
 								<div class="input-prepend">
 									<label>Medicamento</label>
@@ -208,7 +208,7 @@
 								<div class="input-append">
 									<label>Dosis</label>
 									<select disabled>
-										<option>OD-Orden diaria-cada 24 horas</option>
+										<option><?php echo $Resultado->return[$i]->iddosis->nombre ?></option>
 										<option>BID- 2 veces al dia- Cada 12 horas</option>
 										<option>TID- 3 veces al dia- Cada 8 horas</option>
 										<option>QID- 4 veces al dia- Cada 6 horas</option>
@@ -220,11 +220,11 @@
 								</div>
 								<div class="input-append">
 									<label>Días</label>
-									<input class="input-mini" type="text" value="3" disabled>
+									<input class="input-mini" type="text" value="<?php echo $Resultado->return[$i]->duracion ?>" disabled>
 								</div>
 								<div class="input-append">
 									<label>Frascos</label>
-									<input class="input-mini" type="text" value="5" disabled>
+									<input class="input-mini" type="text" value="<?php echo $Resultado->return[$i]->cantidad ?>" disabled>
 								</div>
 								<div class="input-append">
 									<label>Precio</label>
@@ -251,11 +251,11 @@
 									</select>
 								</div>
 							</div>
-							  <?php 
+							 <?php 
 						}
 						
-						?>
-							
+						?> 
+						<!--	
 							<div class="drug-process">
 							<div class="input-prepend">
 								<label>Medicamento</label>
@@ -297,8 +297,7 @@
 							<div class="input-append" data-toggle="buttons-radio">
 								<label>Aprobación</label>
 								<label>Rechazado</label>
-								<!--<label class="radio inline"><input type="radio" name="optionsRadios" id="optionsRadios1" value="aprovado"> Aprovado</label>
-								<label class="radio inline"><input type="radio" name="optionsRadios" id="optionsRadios2" value="rechazado"> Rechazado</label>-->
+
 							</div>
 							<div class="input-append reason">
 								<label>Motivo</label>
@@ -326,7 +325,7 @@
 								</div>
 							</div>
 						</div>
-							
+							-->
 					</div>
                         
                       
