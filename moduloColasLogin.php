@@ -1,3 +1,32 @@
+<?php
+session_start();
+include("/recursos/funciones.php");
+if (isset($_POST["Biniciar"])) {
+  require_once('nusoap.php'); 
+  $wsdl_url = 'http://localhost:15362/HoriFarmacia/WS_mari?WSDL';
+  $client = new SOAPClient($wsdl_url);
+  $client->decode_utf8 = false; 
+  $Analista= array('idanalista' => '1','nombre' => $_POST["usuario"],'usuario' => $_POST["usuario"],'contrasena'=>$_POST["password"]);
+  $Parametros= array('Analistaa' => $Analista);
+  $resultadoLogIn = $client->logIn($Parametros);
+  //echo '<pre>';
+//  print_r($resultadoLogIn);
+  if($resultadoLogIn->return==1){
+		$Usuario= array('Usuario' => $_POST["usuario"]);	
+		$resultadoAnalista = $client->obtenerAnalistaXUsuario($Usuario);
+		if($resultadoAnalista!=null){
+		//echo '<pre>';
+	//	print_r($resultadoAnalista);
+			iraURL("moduloColasVisualizar.php");
+		}else{
+		javaalert( "no hay conexión");
+		}		
+  }else{
+  		javaalert("No esta logueado");
+  }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +115,7 @@
        	  <div id="logueo" align="center">
      		<form class="form-signin" method="post">
         		<h3 class="form-signin-heading">Por favor, inicie sesión</h3>
-        		<input type="text" class="input-block-level" placeholder="Usuario" name="usuario" id="usuario" maxlength="34" pattern="[a-z.ñ]{1,34}" title="Solo se admite minusculas y puntos" autofocus required>
+        		<input type="text" class="input-block-level" placeholder="Usuario" name="usuario" id="usuario" maxlength="34"  title="Solo se admite minusculas y puntos" autofocus required>
         		<input type="password" class="input-block-level" placeholder="Contraseña" name="password" id="password" maxlength="34" pattern="[A-Za-z.0-9ñÑ]{1,34}" required>
         		<button class="btn btn-large btn-info" type="submit" name="Biniciar">Iniciar Sesión</button>
       		</form>

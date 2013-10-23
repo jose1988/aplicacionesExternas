@@ -13,6 +13,26 @@
  //print_r(count($Resultado->return));
  // print_r($Resultado->Idmedicamento);//->return[0]->Idmedicamento->Descripcion
 
+ 
+ ///validar null
+//Verificando si el resultado es una lista de objetos o un solo un objeto para la lectura de los datos 
+if(count($Resultado->return)>1){
+$nombreSolicitante=$Resultado->return[0]->idpreorden->retiranombre;
+$apellidoSolicitante=$Resultado->return[0]->idpreorden->retiraapellido;
+$idPoliza=$Resultado->return[0]->idpreorden->idepol;
+$Certificado=$Resultado->return[0]->idpreorden->numcert;
+$fechaInforme=$Resultado->return[0]->idpreorden->fechainformemedico;
+$diagnosticoMedico=$Resultado->return[0]->idpreorden->diagnosticomedico;
+}else{
+$nombreSolicitante=$Resultado->return->idpreorden->retiranombre;
+$apellidoSolicitante=$Resultado->return->idpreorden->retiraapellido;
+$idPoliza=$Resultado->return->idpreorden->idepol;
+$Certificado=$Resultado->return->idpreorden->numcert;
+$fechaInforme=$Resultado->return->idpreorden->fechainformemedico;
+$diagnosticoMedico=$Resultado->return->idpreorden->diagnosticomedico;
+}
+ 
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,14 +131,15 @@
 								  </thead>
 								<tbody>
 								<tr>
+
 								  <th style="width:7%">Nombre</th>
-								  <td><?php echo $Resultado->return[0]->idpreorden->retiranombre ?></td>
+								  <td><?php echo $nombreSolicitante; ?></td>
 								  <th style="width:8%">Apellido</th>
-								  <td><?php echo $Resultado->return[0]->idpreorden->retiraapellido ?></td>
+								  <td><?php echo $apellidoSolicitante; ?></td>
 								  <th style="width:7%">Póliza</th>
-								  <td><?php echo $Resultado->return[0]->idpreorden->idepol ?></td>
+								  <td><?php echo $idPoliza; ?></td>
 								  <th style="width:9%">Certificado</th>
-								  <td><?php echo $Resultado->return[0]->idpreorden->numcert ?></td>	
+								  <td><?php echo $Certificado; ?></td>	
 								  <th style="width:8%">Compañia</th>
 								  <td>Seguros Horizonte S.A</td>
 								</tr>
@@ -152,9 +173,9 @@
 								<tbody>
 								<tr>
 								  <th>Fecha del Informe</th>
-								  <td><?php echo $Resultado->return[0]->idpreorden->fechainformemedico ?></td>
+								  <td><?php echo $fechaInforme; ?></td>
 								  <th>Descripción</th>
-								  <td style="width:60%"><?php echo $Resultado->return[0]->idpreorden->diagnosticomedico ?></td>
+								  <td style="width:60%"><?php echo $diagnosticoMedico; ?></td>
 								</tr>
 								
 								</tbody>
@@ -193,7 +214,7 @@
 							<div class="medicamentos">
 						
 							<h3>Medicamentos</h3>
-							<?php 
+							<?php 							
 						for($i=0;$i<count($Resultado->return);$i++){
 						?>	
 							<div class="drug-process">
