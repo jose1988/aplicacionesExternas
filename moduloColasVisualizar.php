@@ -1,3 +1,22 @@
+<?php
+  	$wsdl_url = 'http://localhost:15362/HoriFarmacia/WS_Niuska?WSDL';
+	$client = new SOAPClient($wsdl_url);
+    $client->decode_utf8 = false;
+	
+	//Total de Solicitudes por Procesar
+	$ResultadoTotalSolicitudes = $client->obtenerColaPreOrden();
+	
+	
+	//Operadores Conectados por Esatdo
+	$estadoOpeCon= array('estado' =>'1');
+    $ResultadoOperadoresConectados = $client->obtenerTotaOperadoresConectadosXEstado($estadoOpeCon);
+ 	
+	//echo '__________'.$i;
+	//print_r(count($Resultado->return));
+	//print_r($Resultado->Idmedicamento);//->return[0]->Idmedicamento->Descripcion
+    
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +52,7 @@
 	<!--Load fontAwesome css-->
 	<link rel="stylesheet" type="text/css" media="all" href="font-awesome/css/font-awesome.min.css">
 	<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-	
+    
 	<!-- [if IE 7]>
 	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
@@ -89,20 +108,20 @@
             	<table border="0">
                 	<tbody>
                     	<tr>
-                        	<th align="left">Solicitudes pendientes por procesar:</th>
+                        	<th align="left">Solicitudes pendientes por procesar: </th>
                             <td align="right">1350</td>
                         </tr>
                         <tr>
-                            <th align="left">Solicitudes ingresadas en cola hoy:</th>
+                            <th align="left">Solicitudes ingresadas en cola hoy: </th>
                             <td align="right">250</td>
 						</tr>
                         <tr>
-                        	<th align="left">Total de solicitudes por procesar:</th>
-                            <td align="right">1600</td>
+                        	<th align="left">Total de solicitudes por procesar: </th>
+                            <td align="right"><?php echo $ResultadoTotalSolicitudes->return ?></td>
                         </tr>
                         <tr>
-                        	<th align="left">Operadores Conectados</th>
-                            <td align="right">5</td>
+                        	<th align="left">Operadores Conectados: </th>
+                            <td align="right"><?php echo $ResultadoOperadoresConectados->return ?></td>
                 		</tr>
 				</tbody>
           </table>
@@ -180,7 +199,7 @@
 	<div id="footer" class="container">    	
 	</div>
  </div>
-    	
+  	
     <script> /*Función del gráfico*/
 	$(function () {
         $('#container').highcharts({
