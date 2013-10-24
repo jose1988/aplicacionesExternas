@@ -1,6 +1,9 @@
 <?php
 session_start();
 include("/recursos/funciones.php");
+if(existeSesion()){
+	iraURL("moduloColasVisualizar.php");
+}
 if (isset($_POST["Biniciar"])) {
   require_once('nusoap.php'); 
   $wsdl_url = 'http://localhost:15362/HoriFarmacia/WS_mari?WSDL';
@@ -17,12 +20,13 @@ if (isset($_POST["Biniciar"])) {
 		if($resultadoAnalista!=null){
 		//echo '<pre>';
 	//	print_r($resultadoAnalista);
+			$_SESSION["Analista"]=$resultadoAnalista;
 			iraURL("moduloColasVisualizar.php");
 		}else{
 		javaalert( "no hay conexión");
 		}		
   }else{
-  		javaalert("No esta logueado");
+  		javaalert("No coinciden el usuario y contraseña ,por favor verifique");
   }
 
 }
