@@ -6,14 +6,21 @@
 	//Total de Solicitudes por Procesar
 	$ResultadoTotalSolicitudes = $client->obtenerColaPreOrden();
 	
+	//Total de Solicitudes ingresadas en cola hoy
+	$ResultadoColaHoy = $client->obtenerTotalXFechaHoy();
 	
-	//Operadores Conectados por Esatdo
+	
+	//Operadores Conectados por Estado
 	$estadoOpeCon= array('estado' =>'1');
-    $ResultadoOperadoresConectados = $client->obtenerTotaOperadoresConectadosXEstado($estadoOpeCon);
- 	
-	//echo '__________'.$i;
-	//print_r(count($Resultado->return));
-	//print_r($Resultado->Idmedicamento);//->return[0]->Idmedicamento->Descripcion
+    $ResultadoOperadoresConectados = $client->obtenerTotalOperadoresConectadosXEstado($estadoOpeCon);
+	
+	//Operadores Conectados con las Solicitudes que han Procesados
+	$estadoAnaSolPro= array('estado' =>'1');
+    $ResultadoSolicitudesProcesadasXAnalista = $client->listaSolicitudesProcesadasXFecha($estadoAnaSolPro);
+	
+	//Cantidad de Solicitudes Procesadas por Estado
+	$estadoSolPro= array('estado' =>'1');
+    $ResultadoSolicitudesProcesadas = $client->obtenerSolicitudesProcesadasXFecha($estadoSolPro);
     
 
 ?>
@@ -37,7 +44,6 @@
 	<script type='text/javascript' src="js/jquery.fancybox.pack.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
-
 	
 	<!-- styles -->
 	<link href="css/bootstrap.css" rel="stylesheet">
@@ -56,6 +62,10 @@
 	<!-- [if IE 7]>
 	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
+    
+    <link href="footable/css/footable-0.1.css" rel="stylesheet" type="text/css" />
+	<link href="footable/css/footable.sortable-0.1.css" rel="stylesheet" type="text/css" />
+	<link href="footable/css/footable.paginate.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -86,7 +96,6 @@
 	
 	  <div class="container app-container">
 			 
-			 
 	    <div>
 			 	<ul class="nav nav-pills">
 			 		<li class="pull-left">
@@ -109,11 +118,11 @@
                 	<tbody>
                     	<tr>
                         	<th align="left">Solicitudes pendientes por procesar: </th>
-                            <td align="right">1350</td>
+                            <td align="right"><?php echo $ResultadoTotalSolicitudes->return-$ResultadoColaHoy->return ?></td>
                         </tr>
                         <tr>
                             <th align="left">Solicitudes ingresadas en cola hoy: </th>
-                            <td align="right">250</td>
+                            <td align="right"><?php echo $ResultadoColaHoy->return ?></td>
 						</tr>
                         <tr>
                         	<th align="left">Total de solicitudes por procesar: </th>
@@ -122,6 +131,11 @@
                         <tr>
                         	<th align="left">Operadores Conectados: </th>
                             <td align="right"><?php echo $ResultadoOperadoresConectados->return ?></td>
+                		</tr>
+                        
+                        <tr>
+                        	<th align="left">Solicitudes procesadas: </th>
+                            <td align="right"><?php echo $ResultadoSolicitudesProcesadas->return ?></td>
                 		</tr>
 				</tbody>
           </table>
@@ -141,35 +155,24 @@
         		</thead>
                 
         		<tbody>
+                <?php
+					for($i=0;$i<count($ResultadoSolicitudesProcesadasXAnalista->return);$i++){
+						
+						?>
         			<tr>
-            			<td style="text-align:center">Jhon</td>
-              			<td style="text-align:center">5</td>
+            			<td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasXAnalista->return[$i]->nombre ?></td>
+              			<?php
+							$id=$ResultadoSolicitudesProcesadasXAnalista->return[$i]->idanalista;
+							$idAnalista=array('idAnalista' => $id);
+							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
+
+						?>
+                        <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
                 		<td style="text-align:center"><i class="icon-eye-open"></i></td>
             		</tr>
-                    
-            		<tr>
-            			<td style="text-align:center">Juan</td>
-              			<td style="text-align:center">6</td>
-                		<td style="text-align:center"><i class="icon-eye-open"></i></td>
-            		</tr>
-                    
-            		<tr>
-            			<td style="text-align:center">Pedro</td>
-              			<td style="text-align:center">5</td>
-                		<td style="text-align:center"><i class="icon-eye-open"></i></td>
-            		</tr>
-                    
-             		<tr>
-            			<td style="text-align:center">Sandra</td>
-              			<td style="text-align:center">5</td>
-                		<td style="text-align:center"><i class="icon-eye-open"></i></td>
-            		</tr>
-                    
-             		<tr>
-            			<td style="text-align:center">Maria</td>
-              			<td style="text-align:center">7</td>
-                		<td style="text-align:center"><i class="icon-eye-open"></i></td>
-            		</tr>
+                    <?php
+  					} 
+					?>
          		</tbody>
         		</table>
        		</div>
@@ -178,18 +181,6 @@
        			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
         		</div>
        		</div>
-       </div>
-       
-       <div class="span10">
-            	<table border="0">
-                	<tbody>
-                        <tr>
-                        	<th align="left">Solicitudes procesadas: </th>
-                            <td align="right">28</td>
-                		</tr>
-				</tbody>
-          </table>
-       
        </div>
        
        </div>
@@ -268,6 +259,5 @@
         });
     });
 	</script>
-
     </body>
 </html>
