@@ -128,6 +128,10 @@
                         	<th align="left">Total de solicitudes por procesar: </th>
                             <td align="right"><?php echo $ResultadoTotalSolicitudes->return ?></td>
                         </tr>
+                         <tr>
+                        	<th align="left"><p>&nbsp;</p></th>
+                            <td align="right"><p>&nbsp;</p></td>
+                        </tr>
                         <tr>
                         	<th align="left">Operadores Conectados: </th>
                             <td align="right"><?php echo $ResultadoOperadoresConectados->return ?></td>
