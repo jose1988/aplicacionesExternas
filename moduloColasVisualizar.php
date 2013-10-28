@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+//Verifico si ha iniciado sesión sino lo redirecciono al moduloColasLogin.php
+include("/recursos/funciones.php");
+if(!existeSesion()){
+	iraURL("moduloColasLogin.php");
+}
+
   	$wsdl_url = 'http://localhost:15362/HoriFarmacia/WS_Niuska?WSDL';
 	$client = new SOAPClient($wsdl_url);
     $client->decode_utf8 = false;
@@ -6,19 +14,19 @@
 	//Total de Solicitudes por Procesar
 	$ResultadoTotalSolicitudes = $client->obtenerColaPreOrden();
 	
-	//Total de Solicitudes ingresadas en cola hoy
+	//Total de Solicitudes Ingresadas en Cola Hoy
 	$ResultadoColaHoy = $client->obtenerTotalXFechaHoy();
 	
 	
-	//Operadores Conectados por Estado
+	//Operadores Conectados por Estado (Al cual le asigne '1' si esta conectado)
 	$estadoOpeCon= array('estado' =>'1');
     $ResultadoOperadoresConectados = $client->obtenerTotalOperadoresConectadosXEstado($estadoOpeCon);
 	
-	//Operadores Conectados con las Solicitudes que han Procesados
+	//Operadores Conectados con las Solicitudes que han Procesados (Al cual le asigne '1' si esta procesada)
 	$estadoAnaSolPro= array('estado' =>'1');
     $ResultadoSolicitudesProcesadasXAnalista = $client->listaSolicitudesProcesadasXFecha($estadoAnaSolPro);
 	
-	//Cantidad de Solicitudes Procesadas por Estado
+	//Cantidad de Solicitudes Procesadas por Estado (Al cual le asigne '1' si esta procesada)
 	$estadoSolPro= array('estado' =>'1');
     $ResultadoSolicitudesProcesadas = $client->obtenerSolicitudesProcesadasXFecha($estadoSolPro);
     
@@ -164,7 +172,6 @@
         		<tbody>
                 <?php
 				
-				//validar null
 				//Verificando si el resultado es una lista de objetos o un solo un objeto para la lectura de los datos 
 				if(count($ResultadoSolicitudesProcesadasXAnalista->return)>1){
 				
@@ -174,10 +181,12 @@
         			<tr>
             			<td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasXAnalista->return[$i]->nombre ?></td>
               			<?php
-							$id=$ResultadoSolicitudesProcesadasXAnalista->return[$i]->idanalista;
+							//Obtengo el id del analista
+							$id=$ResultadoSolicitudesProcesadasXAnalista->return->idanalista;
+							//Lo convierto en array
 							$idAnalista=array('idAnalista' => $id);
+							//Llamo al servicio que cuenta cuantas solicitudes fueron procesadas por cada analista 
 							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
-
 						?>
                         <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
                 		<td style="text-align:center"><a href="moduloColasOperador.php?id=<?php echo $id?>"><i class="icon-eye-open"></i></a></td>
@@ -190,10 +199,12 @@
         			<tr>
             			<td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasXAnalista->return->nombre ?></td>
               			<?php
+							//Obtengo el id del analista
 							$id=$ResultadoSolicitudesProcesadasXAnalista->return->idanalista;
+							//Lo convierto en array
 							$idAnalista=array('idAnalista' => $id);
+							//Llamo al servicio que cuenta cuantas solicitudes fueron procesadas por cada analista 
 							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
-
 						?>
                         <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
                 		<td style="text-align:center"><a href="moduloColasOperador.php?id=<?php echo $idAnalista?>"><i class="icon-eye-open"></i></a></td>
