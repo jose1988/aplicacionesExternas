@@ -125,15 +125,15 @@ if(!existeSesion()){
             	<table border="0">
                 	<tbody>
                     	<tr>
-                        	<th align="left">Solicitudes pendientes por procesar: </th>
+                        	<th align="left">Solicitudes Pendientes por Procesar: </th>
                             <td align="right"><?php echo $ResultadoTotalSolicitudes->return-$ResultadoColaHoy->return ?></td>
                         </tr>
                         <tr>
-                            <th align="left">Solicitudes ingresadas en cola hoy: </th>
+                            <th align="left">Solicitudes Ingresadas en Cola Hoy: </th>
                             <td align="right"><?php echo $ResultadoColaHoy->return ?></td>
 						</tr>
                         <tr>
-                        	<th align="left">Total de solicitudes por procesar: </th>
+                        	<th align="left">Total de Solicitudes por Procesar: </th>
                             <td align="right"><?php echo $ResultadoTotalSolicitudes->return ?></td>
                         </tr>
                         <tr>
@@ -149,7 +149,7 @@ if(!existeSesion()){
                             <td align="right"><p>&nbsp;</p></td>
                         </tr>
                         <tr>
-                        	<th align="left">Solicitudes procesadas: </th>
+                        	<th align="left">Solicitudes Procesadas: </th>
                             <td align="right"><?php echo $ResultadoSolicitudesProcesadas->return ?></td>
                 		</tr>
 				</tbody>
@@ -159,6 +159,10 @@ if(!existeSesion()){
        		<div class="span5">
        		</br>
        		</br>
+        <?php 
+			//Verificando que no este vacio o no sea null
+			if(isset($ResultadoSolicitudesProcesadasXAnalista->return)){
+		?>
        
        		<table class="table table-bordered table-striped" width="70%">
         		<thead bgcolor="#B9B9B9">
@@ -167,8 +171,7 @@ if(!existeSesion()){
                 		<th style="text-align:center">Solicitudes Procesadas</th>
                 		<th style="text-align:center">Visualizar</th>
            		 	</tr>
-        		</thead>
-                
+        		</thead>                
         		<tbody>
                 <?php
 				
@@ -182,19 +185,22 @@ if(!existeSesion()){
             			<td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasXAnalista->return[$i]->nombre ?></td>
               			<?php
 							//Obtengo el id del analista
-							$id=$ResultadoSolicitudesProcesadasXAnalista->return->idanalista;
+							$id=$ResultadoSolicitudesProcesadasXAnalista->return[$i]->idanalista;
 							//Lo convierto en array
 							$idAnalista=array('idAnalista' => $id);
 							//Llamo al servicio que cuenta cuantas solicitudes fueron procesadas por cada analista 
 							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
 						?>
                         <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
-                		<td style="text-align:center"><a href="moduloColasOperador.php?id=<?php echo $id?>"><i class="icon-eye-open"></i></a></td>
+                		<td style="text-align:center">
+                        	<a href="moduloColasOperador.php?id=<?php echo $id?>">
+                            	<i class="icon-eye-open"></i>
+                            </a>
+                        </td>
             		</tr>
                     <?php
   					}
 				}else{
-					
 					?>
         			<tr>
             			<td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasXAnalista->return->nombre ?></td>
@@ -207,14 +213,26 @@ if(!existeSesion()){
 							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
 						?>
                         <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
-                		<td style="text-align:center"><a href="moduloColasOperador.php?id=<?php echo $idAnalista?>"><i class="icon-eye-open"></i></a></td>
+                		<td style="text-align:center">
+                        	<a href="moduloColasOperador.php?id=<?php echo $id?>">
+                        		<i class="icon-eye-open"></i>
+                        	</a>
+                        </td>
             		</tr>
                     <?php
-					
 					}
 					?>
          		</tbody>
         		</table>
+             <?php
+             }
+			 //Sino existen registros no muestro la tabla
+			 else{?>
+				 <div class="alert alert-block" align="center">
+   					<h2 style="color:rgb(255,255,255)" align="center">Atención</h2>
+    				<h4 align="center">No Existen Registros</h4>
+   			     </div>
+				 <?php }?>
        		</div>
        
        		<div class="span4">
