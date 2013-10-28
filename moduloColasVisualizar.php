@@ -74,12 +74,12 @@
 
 	<div id="header">
 		<div class="container header-top-top hidden-phone">
-			<img alt="" src="../HorizonLine - Farmacia/images/header-top-top-left.png" class="pull-left">
-			<img alt="" src="../HorizonLine - Farmacia/images/header-top-top-right.png" class="pull-right">
+        	<img alt="" src="images/header-top-top-left.png" class="pull-left">
+			<img alt="" src="images/header-top-top-right.png" class="pull-right">
 		</div>
 		<div class="header-top">
 			<div class="container">
-				<img alt="" src="../HorizonLine - Farmacia/images/header-top-left.png" class="pull-left">
+				<img alt="" src="images/header-top-left.png" class="pull-left">
 				<div class="pull-right">
 					
 				</div>
@@ -128,7 +128,7 @@
                         	<th align="left">Total de solicitudes por procesar: </th>
                             <td align="right"><?php echo $ResultadoTotalSolicitudes->return ?></td>
                         </tr>
-                         <tr>
+                        <tr>
                         	<th align="left"><p>&nbsp;</p></th>
                             <td align="right"><p>&nbsp;</p></td>
                         </tr>
@@ -136,7 +136,10 @@
                         	<th align="left">Operadores Conectados: </th>
                             <td align="right"><?php echo $ResultadoOperadoresConectados->return ?></td>
                 		</tr>
-                        
+                        <tr>
+                        	<th align="left"><p>&nbsp;</p></th>
+                            <td align="right"><p>&nbsp;</p></td>
+                        </tr>
                         <tr>
                         	<th align="left">Solicitudes procesadas: </th>
                             <td align="right"><?php echo $ResultadoSolicitudesProcesadas->return ?></td>
@@ -160,6 +163,11 @@
                 
         		<tbody>
                 <?php
+				
+				//validar null
+				//Verificando si el resultado es una lista de objetos o un solo un objeto para la lectura de los datos 
+				if(count($ResultadoSolicitudesProcesadasXAnalista->return)>1){
+				
 					for($i=0;$i<count($ResultadoSolicitudesProcesadasXAnalista->return);$i++){
 						
 						?>
@@ -172,10 +180,27 @@
 
 						?>
                         <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
-                		<td style="text-align:center"><i class="icon-eye-open"></i></td>
+                		<td style="text-align:center"><a href="moduloColasOperador.php?id=<?php echo $id?>"><i class="icon-eye-open"></i></a></td>
             		</tr>
                     <?php
-  					} 
+  					}
+				}else{
+					
+					?>
+        			<tr>
+            			<td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasXAnalista->return->nombre ?></td>
+              			<?php
+							$id=$ResultadoSolicitudesProcesadasXAnalista->return->idanalista;
+							$idAnalista=array('idAnalista' => $id);
+							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
+
+						?>
+                        <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
+                		<td style="text-align:center"><a href="moduloColasOperador.php?id=<?php echo $idAnalista?>"><i class="icon-eye-open"></i></a></td>
+            		</tr>
+                    <?php
+					
+					}
 					?>
          		</tbody>
         		</table>
