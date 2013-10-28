@@ -1,5 +1,4 @@
 <?php
-
 //función que direcciona a una pagina especifica
 function iraURL($url){
 	$ini='<script language="javascript">

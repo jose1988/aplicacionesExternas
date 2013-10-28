@@ -13,17 +13,17 @@ if (isset($_POST["Biniciar"])) {
   $Parametros= array('Analistaa' => $Analista);
   $resultadoLogIn = $client->logIn($Parametros);
   //echo '<pre>';
-//  print_r($resultadoLogIn);
+  //print_r($resultadoLogIn);
   if($resultadoLogIn->return==1){
 		$Usuario= array('Usuario' => $_POST["usuario"]);	
 		$resultadoAnalista = $client->obtenerAnalistaXUsuario($Usuario);
-		if($resultadoAnalista!=null){
 		//echo '<pre>';
-	//	print_r($resultadoAnalista);
+		//print_r($resultadoAnalista);
+		if(isset($resultadoAnalista->return)){
 			$_SESSION["Analista"]=$resultadoAnalista;
 			iraURL("moduloColasVisualizar.php");
 		}else{
-		javaalert( "no hay conexión");
+		javaalert( "no hay conexión en estos momentos");
 		}		
   }else{
   		javaalert("No coinciden el usuario y contraseña ,por favor verifique");
