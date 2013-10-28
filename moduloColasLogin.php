@@ -79,12 +79,12 @@ if (isset($_POST["Biniciar"])) {
 
 	<div id="header">
 		<div class="container header-top-top hidden-phone">
-			<img alt="" src="../HorizonLine - Farmacia/images/header-top-top-left.png" class="pull-left">
-			<img alt="" src="../HorizonLine - Farmacia/images/header-top-top-right.png" class="pull-right">
+			<img alt="" src="images/header-top-top-left.png" class="pull-left">
+			<img alt="" src="images/header-top-top-right.png" class="pull-right">
 		</div>
 		<div class="header-top">
 			<div class="container">
-				<img alt="" src="../HorizonLine - Farmacia/images/header-top-left.png" class="pull-left">
+				<img alt="" src="images/header-top-left.png" class="pull-left">
 				<div class="pull-right">
 					
 				</div>
@@ -119,8 +119,8 @@ if (isset($_POST["Biniciar"])) {
        	  <div id="logueo" align="center">
      		<form class="form-signin" method="post">
         		<h3 class="form-signin-heading">Por favor, inicie sesión</h3>
-        		<input type="text" class="input-block-level" placeholder="Usuario" name="usuario" id="usuario" maxlength="34"  title="Solo se admite minusculas y puntos" autofocus required>
-        		<input type="password" class="input-block-level" placeholder="Contraseña" name="password" id="password" maxlength="34" pattern="[A-Za-z.0-9ñÑ]{1,34}" required>
+        		<input type="text" class="input-block-level" placeholder="Usuario" name="usuario" id="usuario" maxlength="38"  title="Ingrese el nombre de usuario" autofocus required>
+        		<input type="password" class="input-block-level" placeholder="Contraseña" name="password" id="password" maxlength="38" title="Ingrese la contraseña"  required>
         		<button class="btn btn-large btn-info" type="submit" name="Biniciar">Iniciar Sesión</button>
       		</form>
 
