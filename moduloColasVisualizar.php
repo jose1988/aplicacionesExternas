@@ -1,7 +1,5 @@
 <?php
-
-
-  	$wsdl_url = 'http://localhost:15362/HoriFarmacia/WS_Niuska?WSDL';
+  	$wsdl_url = 'http://localhost:15362/HoriFarmacia/ColasWS?WSDL';
 	$client = new SOAPClient($wsdl_url);
     $client->decode_utf8 = false;
 	
