@@ -1,11 +1,5 @@
 <?php
-session_start();
 
-//Verifico si ha iniciado sesión sino lo redirecciono al moduloColasLogin.php
-include("/recursos/funciones.php");
-if(!existeSesion()){
-	iraURL("moduloColasLogin.php");
-}
 
   	$wsdl_url = 'http://localhost:15362/HoriFarmacia/WS_Niuska?WSDL';
 	$client = new SOAPClient($wsdl_url);
@@ -50,6 +44,7 @@ if(!existeSesion()){
 <!--<script type='text/javascript' src="js/togglesidebar.js"></script>-->	
 	<script type='text/javascript' src="js/custom.js"></script>
 	<script type='text/javascript' src="js/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="js/jquery-2.0.2.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	
@@ -120,7 +115,8 @@ if(!existeSesion()){
        </br>
        </br>
        <h1>Datos de las Solicitudes</h1>
-       <div class="span10"> 
+       <div class="span10">
+       		<div class="span5"> 
        		<br>
             	<table border="0">
                 	<tbody>
@@ -137,26 +133,28 @@ if(!existeSesion()){
                             <td align="right"><?php echo $ResultadoTotalSolicitudes->return ?></td>
                         </tr>
                         <tr>
-                        	<th align="left"><p>&nbsp;</p></th>
-                            <td align="right"><p>&nbsp;</p></td>
-                        </tr>
-                        <tr>
                         	<th align="left">Operadores Conectados: </th>
                             <td align="right"><?php echo $ResultadoOperadoresConectados->return ?></td>
                 		</tr>
-                        <tr>
-                        	<th align="left"><p>&nbsp;</p></th>
-                            <td align="right"><p>&nbsp;</p></td>
-                        </tr>
                         <tr>
                         	<th align="left">Solicitudes Procesadas: </th>
                             <td align="right"><?php echo $ResultadoSolicitudesProcesadas->return ?></td>
                 		</tr>
 				</tbody>
           </table>
+          </div>
+          
+          	<div class="span4">
+       			<div id="containerDos" style="min-width: 100px; height: 200px; margin: 0 auto">
+        		</div>
+       		</div>
+          
         </div>
+       
        <div class="span10">
-       		<div class="span5">
+ 
+            
+        <div class="span5">
        		</br>
        		</br>
         <?php 
@@ -191,6 +189,7 @@ if(!existeSesion()){
 							//Llamo al servicio que cuenta cuantas solicitudes fueron procesadas por cada analista 
 							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
 						?>
+                        
                         <td style="text-align:center"><?php echo $ResultadoSolicitudesProcesadasConteo->return ?></td>
                 		<td style="text-align:center">
                         	<a href="moduloColasOperador.php?id=<?php echo $id?>">
@@ -235,12 +234,16 @@ if(!existeSesion()){
 				 <?php }?>
        		</div>
        
-       		<div class="span4">
-       			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
+       <?php //Verificando que no este vacio o no sea null
+			if(isset($ResultadoSolicitudesProcesadasXAnalista->return)){ 
+		?>   
+            <div class="span4">
+       			<div id="containerUno" style="min-width: 100px; height: 200px; margin: 0 auto">
         		</div>
        		</div>
+           <?php }?>
        </div>
-       
+       	
        </div>
 	</div>
     
@@ -249,42 +252,52 @@ if(!existeSesion()){
 	</div>
  </div>
   	
-    <script> /*Función del gráfico*/
+    <script> /*Funciones de los gráfico*/
 	$(function () {
-        $('#container').highcharts({
+		
+		/*Gráfico del total de las solicitudes contra las solicitudes procesadas por cada analista*/
+        $('#containerUno').highcharts({
             chart: {
                 type: 'column'
             },
             title: {
-                text: 'Monthly Average Rainfall'
+                text: 'Total de Solicitudes'
             },
-            subtitle: {
-                text: 'Source: WorldClimate.com'
+			subtitle: {
+                text: 'Procesadas por Analista'
             },
             xAxis: {
                 categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
+					<?php 
+						if(count($ResultadoSolicitudesProcesadasXAnalista->return)>1){
+				
+							for($i=0;$i<count($ResultadoSolicitudesProcesadasXAnalista->return);$i++){
+								if($i==0){?>
+								
+								'<?php echo $ResultadoSolicitudesProcesadasXAnalista->return[$i]->nombre; ?>'
+								
+							<?php }
+								else{ ?>
+									,'<?php echo $ResultadoSolicitudesProcesadasXAnalista->return[$i]->nombre; ?>'
+								<?php }
+							}
+						}
+						else{?>
+								'<?php echo $ResultadoSolicitudesProcesadasXAnalista->return->nombre; ?>'
+							<?php }
+						
+					?>
                 ]
             },
             yAxis: {
                 min: 0,
+				max: <?php echo $ResultadoTotalSolicitudes->return ?>,
                 title: {
-                    text: 'Rainfall (mm)'
+                    text: 'Cantidad Total'
                 }
             },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+             tooltip: {
+                headerFormat: '<span style="font-size:8px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
                     '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
                 footerFormat: '</table>',
@@ -293,28 +306,98 @@ if(!existeSesion()){
             },
             plotOptions: {
                 column: {
-                    pointPadding: 0.2,
+                    pointPadding: 0.01,
+                    borderWidth: 0
+                }
+            },
+            series: [{				
+                name: 'Procesadas por Analista',
+                data: [
+					<?php 
+						if(count($ResultadoSolicitudesProcesadasXAnalista->return)>1){
+				
+							for($i=0;$i<count($ResultadoSolicitudesProcesadasXAnalista->return);$i++){
+								
+								//Obtengo el id del analista
+								$id=$ResultadoSolicitudesProcesadasXAnalista->return[$i]->idanalista;
+								//Lo convierto en array
+								$idAnalista=array('idAnalista' => $id);
+								//Llamo al servicio que cuenta cuantas solicitudes fueron procesadas por cada analista 
+								$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
+								
+								if($i==0){
+									echo $ResultadoSolicitudesProcesadasConteo->return; 
+								
+								}
+								else{ ?>
+									,<?php echo $ResultadoSolicitudesProcesadasConteo->return;
+									}
+							}
+						}
+						else{
+							//Obtengo el id del analista
+							$id=$ResultadoSolicitudesProcesadasXAnalista->return->idanalista;
+							//Lo convierto en array
+							$idAnalista=array('idAnalista' => $id);
+							//Llamo al servicio que cuenta cuantas solicitudes fueron procesadas por cada analista 
+							$ResultadoSolicitudesProcesadasConteo = $client->contarSHXidAnalista($idAnalista);
+							?>
+								<?php echo $ResultadoSolicitudesProcesadasConteo->return ?>
+							<?php }
+						
+					?>
+				]
+    
+            }]
+        });
+		
+		
+		
+		/*Gráfico del total de las solicitudes contra las solicitudes asignadas y no asignadas*/
+        $('#containerDos').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Total de Solicitudes'
+            },
+            xAxis: {
+                categories: [
+					'Asignadas',
+					'No Asignadas'
+                ]
+            },
+            yAxis: {
+                min: 0,
+				max: <?php echo $ResultadoTotalSolicitudes->return ?>,
+                title: {
+                    text: 'Cantidad Total'
+                }
+            },
+             tooltip: {
+                headerFormat: '<span style="font-size:8px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0"> </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.1,
                     borderWidth: 0
                 }
             },
             series: [{
-                name: 'Tokyo',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-    
-            }, {
-                name: 'New York',
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-    
-            }, {
-                name: 'London',
-                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-    
-            }, {
-                name: 'Berlin',
-                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+				name: 'Total',
+                data: [
+					<?php echo $ResultadoColaHoy->return ?>,
+					<?php echo $ResultadoTotalSolicitudes->return-$ResultadoColaHoy->return ?>
+					]
     
             }]
         });
+		
     });
 	</script>
     </body>
