@@ -1,4 +1,4 @@
-﻿.footable {
+.footable {
 	border-collapse: separate;
   border-spacing: 0;
   width: 100%;
@@ -50,7 +50,7 @@
   background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
   background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
   background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
-  background-image: linear-gradient(to bottom, #ebf3fc, #dce9f9);
+  background-image: linear-gradient(to bottom,  #FFFFFF, #808080);
   -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
   -moz-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
   box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
@@ -110,7 +110,7 @@
   background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
   background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
   background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
-  background-image: linear-gradient(to bottom, #ebf3fc, #dce9f9);
+  background-image: linear-gradient(to bottom,  #FFFFFF, #808080);
   -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
   -moz-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
   box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;

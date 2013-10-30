@@ -224,7 +224,7 @@
 								   }   else { ?>
 										  <div class="alert alert-block" align="center">
    										  <h2 style="color:rgb(255,255,255)" align="center">Atención</h2>
-    									  <h4 align="center">No hay procesado solicitudes hoy</h4>
+    									  <h4 align="center">El Analista <?php $Nanalista ?> hoy no ha procesado solicitudes</h4>
    			    					 </div> 
 									 <?php
 									 }
