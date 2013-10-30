@@ -122,7 +122,7 @@
 			             
               <div class="tab-content">
                   <div class="span10">
-                        <button type="button" class="btn btn-success"><i class="icon-arrow-left"></i> Regresar<a href="moduloColasVisualizar.php"></a></button>
+                        <a href="moduloColasVisualizar.php"><button type="button" class="btn btn-success"><i class="icon-arrow-left"></i> Regresar</button></a>
                   </div>
                         
                   <div class="span10"> 
@@ -232,7 +232,7 @@
                                  
                               </tbody>
                             </table>
-                           <ul id="pagination" class="footable-nav"><span>Pages:</span></ul>
+                           <ul id="pagination" class="footable-nav"><span>Pag:</span></ul>
                             
                   </div>
                   
