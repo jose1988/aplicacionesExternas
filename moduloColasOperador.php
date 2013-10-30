@@ -1,16 +1,37 @@
 <?php 
   require_once('nusoap.php'); 
-  $wsdl_url = 'http://localhost:15362/HoriFarmacia/ColaWS?WSDL';
+  $wsdl_url = 'http://localhost:15362/HoriFarmacia/ColasWS?WSDL';
   $client = new SOAPClient($wsdl_url);
   $client->decode_utf8 = false; 
-  $Analista = array('idAnalista' => '1');
+  $id=$_GET["id"];
+  $Analista = array('idAnalista' => $id);
   $Resultado = $client->listaPreordenAnalistaXidAnalista($Analista);
-  $reg=count($Resultado->return);
-  $Resultad2 = $client->promedioSolicitudesXidAnalista($Analista);
-  $promedio =$Resultad2->return;
+				  if(!isset($Resultado->return)){
+						 $reg=0;
+				  }else{
+						 $reg=count($Resultado->return);
+				  }
+   $Resultad2 = $client->promedioSolicitudesXidAnalista($Analista);
+				  if(!isset($Resultad2->return)){
+						 $promedio=0;
+				  }else{
+						 $promedio =$Resultad2->return;
+				  }
+  
   $estadoCon= array('estado' =>'1');
   $Resultad3 = $client->obtenerTotalOperadoresConectadosXEstado($estadoCon);
-  $conectados = $Resultad3->return;
+  				  if(!isset($Resultad3->return)){
+						 $conectados=0;
+				  }else{
+						 $conectados = $Resultad3->return;
+				  }
+  
+  $Resultad4 = $client->buscarAnalista($Analista);
+  				  if(!isset($Resultad4->return)){
+						 $Nanalista="Analista No encontrado";
+				  }else{
+						 $Nanalista = $Resultad4->return->nombre;
+				  }
   
   
 ?>
@@ -52,6 +73,9 @@
 	<!-- [if IE 7]>
 	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
+    <link href="footable/css/footable-0.1.css" rel="stylesheet" type="text/css" />
+	<link href="footable/css/footable.sortable-0.1.css" rel="stylesheet" type="text/css" />
+	<link href="footable/css/footable.paginate.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -109,10 +133,8 @@
                                 <tr>
                                   <th align="left"> Nombre de Operador:</th>
                                   <td align="right"><?php 
-								                if($reg>1){
-													echo $Resultado->return[0]->idanalista->nombre; 
-													} else{ 
-													echo $Resultado->return->idanalista->nombre; ; }?>
+								                     echo $Nanalista;
+													 ?>
                                                     </td>
                                 </tr>
                              
@@ -138,7 +160,12 @@
                  <div class="span6"> 
                   <br>
                 
-                         <table class="table table-striped table-bordered" align="center">
+                        
+                                
+                                <?php
+								if($reg!=0){
+									?>
+									 <table class="footable table table-striped table-bordered" align="center" data-page-size="2">
                               <thead bgcolor="#B9B9B9">
 								 <tr>
 								   <th style="width:9%">Nro de Preorden</th>
@@ -149,11 +176,7 @@
 							  </thead>
                               <tbody>
                                 <tr>
-                                
-                                <?php
-								if($reg!=0){
-									
-									
+									<?php
 								if($reg>1){
 								  $j=0;
 								     while($j<$reg){ ?>
@@ -198,13 +221,18 @@
                                 </tr>
 								<?php		 
 									 }
-								   }   else {
-										 
+								   }   else { ?>
+										  <div class="alert alert-block" align="center">
+   										  <h2 style="color:rgb(255,255,255)" align="center">Atención</h2>
+    									  <h4 align="center">No hay procesado solicitudes hoy</h4>
+   			    					 </div> 
+									 <?php
 									 }
 							     ?>
                                  
                               </tbody>
                             </table>
+                           <ul id="pagination" class="footable-nav"><span>Pages:</span></ul>
                             
                   </div>
                   
@@ -239,6 +267,18 @@
 		});
 	</script>
     	
+        
+</script>  
+
+<script src="footable/js/footable.js" type="text/javascript"></script>
+<script src="footable/js/footable.paginate.js" type="text/javascript"></script>
+<script src="footable/js/footable.sortable.js" type="text/javascript"></script>
+ 
+  <script type="text/javascript">
+    $(function() {
+      $('table').footable();
+    });
+  </script>
 
     </body>
 </html>
