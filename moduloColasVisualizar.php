@@ -64,10 +64,10 @@
 	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
     
-    <link href="footable/css/footable-0.1.css" rel="stylesheet" type="text/css" />
+    <!-- styles de paginacion -->
+   	<link href="footable/css/footable-0.1.css" rel="stylesheet" type="text/css" />
 	<link href="footable/css/footable.sortable-0.1.css" rel="stylesheet" type="text/css" />
 	<link href="footable/css/footable.paginate.css" rel="stylesheet" type="text/css" />
-
 </head>
 
    
@@ -160,12 +160,12 @@
 			if(isset($ResultadoSolicitudesProcesadasXAnalista->return)){
 		?>
        
-       		<table class="table table-bordered table-striped" width="70%">
+       		<table class="footable table table-striped table-bordered" align="center" data-page-size="4">
         		<thead bgcolor="#B9B9B9">
         			<tr>
-            			<th style="text-align:center">Operador</th>
-                		<th style="text-align:center">Solicitudes Procesadas</th>
-                		<th style="text-align:center">Visualizar</th>
+            			<th style="text-align:center" data-sort-ignore="true">Operador</th>
+                		<th style="text-align:center" data-sort-ignore="true">Solicitudes Procesadas</th>
+                		<th style="text-align:center" data-sort-ignore="true">Visualizar</th>
            		 	</tr>
         		</thead>                
         		<tbody>
@@ -221,13 +221,14 @@
 					?>
          		</tbody>
         		</table>
+                <ul id="pagination" class="footable-nav"><span>Pag:</span></ul>
              <?php
              }
 			 //Sino existen registros no muestro la tabla
 			 else{?>
 				 <div class="alert alert-block" align="center">
    					<h2 style="color:rgb(255,255,255)" align="center">Atención</h2>
-    				<h4 align="center">No Existen Registros</h4>
+    				<h4 align="center">No se han Procesado Solicitudes el Día de Hoy</h4>
    			     </div>
 				 <?php }?>
        		</div>
@@ -236,6 +237,8 @@
 			if(isset($ResultadoSolicitudesProcesadasXAnalista->return)){ 
 		?>   
             <div class="span4">
+            	</br>
+       			</br>
        			<div id="containerUno" style="min-width: 100px; height: 200px; margin: 0 auto">
         		</div>
        		</div>
@@ -398,5 +401,16 @@
 		
     });
 	</script>
+    
+    <!-- script de paginacion -->
+	<script src="footable/js/footable.js" type="text/javascript"></script>
+	<script src="footable/js/footable.paginate.js" type="text/javascript"></script>
+	<script src="footable/js/footable.sortable.js" type="text/javascript"></script>
+ 
+  	<script type="text/javascript">
+    	$(function() {
+      		$('table').footable();
+    	});
+  	</script>
     </body>
 </html>
